@@ -46,6 +46,21 @@ def main():
 
     with tab2:
         st.header('Search similar words or senteces')
+        search_query = st.text_input("Enter Sentence ir Word")
+        if st.button("Search"):
+            if search_query:
+                query_imbeddings = model.encode(search_query).tolist()
+                results = vector_db.search(query_imbeddings)
+                if results:
+                    st.subheader("Most similar Words or Sentences")
+                    for i,result in enumerate(results,1):
+                        st.write(f"{i}__{result.payload["text"]}__(similarity:{result.score})")
+                else:
+                    st.info("No Result")
+
+            else:
+                st.warning("Please enter Word or sentence")
+
        
   
 
